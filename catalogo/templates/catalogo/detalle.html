@@ -1,0 +1,42 @@
+{% extends 'catalogo/base.html' %}
+{% load humanize static %}
+
+{% block title %}{{ producto.nombre }} | Ferretería{% endblock %}
+{% block body_class %}secondary-page detail-page{% endblock %}
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'catalogo/css/secondary.css' %}?v=2">
+{% endblock %}
+{% block main_class %}secondary-main detail-main{% endblock %}
+
+{% block content %}
+<article class="precision-card detail-card">
+	<div class="detail-card__image">
+		<img src="{{ producto.imagen }}" alt="{{ producto.nombre }}">
+		<span class="detail-card__index">PRODUCTO / {{ producto.id }}</span>
+	</div>
+	<div class="detail-card__body">
+		<p class="secondary-eyebrow"><span></span> {{ producto.categoria }}</p>
+		<h1>{{ producto.nombre }}</h1>
+		<p class="detail-card__price">${{ producto.precio|intcomma }}</p>
+		<dl class="detail-specs">
+			<div><dt>Referencia</dt><dd>{{ producto.id }}</dd></div>
+			<div>
+				<dt>Disponibilidad</dt>
+				<dd>
+					{% if producto.stock > 0 %}
+					<span class="detail-stock"><span></span>{{ producto.stock }} unidades disponibles</span>
+					{% else %}
+					<span class="detail-stock detail-stock--empty"><span></span>Agotado</span>
+					{% endif %}
+				</dd>
+			</div>
+		</dl>
+		<div class="detail-card__actions">
+			{% if producto.stock > 0 %}
+			<a href="{% url 'agregar_al_carrito' producto.id %}" class="secondary-button secondary-button--primary"><i class="bi bi-bag-plus" aria-hidden="true"></i> Agregar al carrito</a>
+			{% endif %}
+			<a href="{% url 'lista_productos' %}" class="secondary-button secondary-button--quiet"><i class="bi bi-arrow-left" aria-hidden="true"></i> Regresar al catálogo</a>
+		</div>
+	</div>
+</article>
+{% endblock %}
